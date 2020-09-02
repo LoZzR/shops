@@ -1,0 +1,1 @@
+This is a Rest API used to manage shops
