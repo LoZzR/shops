@@ -12,7 +12,13 @@ public class Shop {
 	}
 
 	public Shop(String name, String description, String imagePath) {
-		super();
+		this.name = name;
+		this.description = description;
+		this.imagePath = imagePath;
+	}
+	
+	public Shop(int id, String name, String description, String imagePath) {
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.imagePath = imagePath;
@@ -48,6 +54,13 @@ public class Shop {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Shop)) return false;
+		Shop shop = (Shop) obj;
+		return this.id == shop.getId();
 	}
 	
 }

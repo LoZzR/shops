@@ -1,14 +1,14 @@
 package com.zack.shops.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User {
 	
 	private int id;
 	private String name;
 	private String mail;
-	private List<Shop> likedShops;
+	private Set<Shop> likedShops;
 	
 	public User() {
 	}
@@ -17,7 +17,7 @@ public class User {
 		this.id = id;
 		this.name = name;
 		this.mail = mail;
-		this.likedShops = new ArrayList<Shop>();
+		this.likedShops = new HashSet<Shop>();
 	}
 
 	public int getId() {
@@ -44,11 +44,11 @@ public class User {
 		this.mail = mail;
 	}
 
-	public List<Shop> getLikedShops() {
+	public Set<Shop> getLikedShops() {
 		return likedShops;
 	}
 
-	public void setLikedShops(List<Shop> likedShops) {
+	public void setLikedShops(Set<Shop> likedShops) {
 		this.likedShops = likedShops;
 	}
 	
