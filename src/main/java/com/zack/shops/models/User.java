@@ -3,12 +3,20 @@ package com.zack.shops.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String name;
 	private String mail;
-	private Set<Shop> likedShops;
+	//private Set<Shop> likedShops;
 	
 	public User() {
 	}
@@ -17,7 +25,7 @@ public class User {
 		this.id = id;
 		this.name = name;
 		this.mail = mail;
-		this.likedShops = new HashSet<Shop>();
+		//this.likedShops = new HashSet<Shop>();
 	}
 
 	public int getId() {
@@ -44,7 +52,7 @@ public class User {
 		this.mail = mail;
 	}
 
-	public Set<Shop> getLikedShops() {
+	/*public Set<Shop> getLikedShops() {
 		return likedShops;
 	}
 
@@ -54,6 +62,6 @@ public class User {
 	
 	public void addLikedShop(Shop shop) {
 		this.likedShops.add(shop);
-	}
+	}*/
 	
 }

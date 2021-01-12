@@ -1,4 +1,4 @@
-package com.zack.shops.Services;
+package com.zack.shops.services;
 
 import java.util.HashSet;
 import java.util.Set;

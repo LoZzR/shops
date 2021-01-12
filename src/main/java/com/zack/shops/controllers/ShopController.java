@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zack.shops.Services.ShopService;
 import com.zack.shops.models.Shop;
+import com.zack.shops.services.ShopService;
 
 
 @CrossOrigin(origins = "http://localhost:4200")
