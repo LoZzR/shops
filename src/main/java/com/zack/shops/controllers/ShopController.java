@@ -35,9 +35,9 @@ public class ShopController {
 		return this.shopService.getLikedShops();
 	}
 	
-	@PostMapping("/like")
-	public void likeShop(@RequestBody String nameShop) {
-		this.shopService.likeShop(nameShop);
+	@PostMapping("/like/{idShop}")
+	public void likeShop(@PathVariable int idShop) {
+		this.shopService.likeShop(idShop);
 	}
 	
 	@PostMapping("")
@@ -50,8 +50,8 @@ public class ShopController {
 		return this.shopService.getShopById(id);
 	}
 	
-	@PutMapping("/{id}")
-	public Shop editShop(@RequestBody Shop shop, @PathVariable int id) {
+	@PutMapping("")
+	public Shop editShop(@RequestBody Shop shop) {
 		return this.shopService.editShop(shop);
 	}
 	

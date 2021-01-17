@@ -1,11 +1,30 @@
 package com.zack.shops.models;
 
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class Shop {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	private String name;
+	@Column(columnDefinition = "TEXT")
 	private String description;
 	private String imagePath;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "likedShops")
+	Set<User> likes;
 	
 	public Shop() {
 		
@@ -56,6 +75,14 @@ public class Shop {
 		this.imagePath = imagePath;
 	}
 	
+	public Set<User> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(Set<User> likes) {
+		this.likes = likes;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Shop)) return false;

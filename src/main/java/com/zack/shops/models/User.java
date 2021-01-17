@@ -7,6 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.JoinColumn;
 
 @Entity
 public class User {
@@ -16,7 +22,14 @@ public class User {
 	private int id;
 	private String name;
 	private String mail;
-	//private Set<Shop> likedShops;
+	
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(
+	  name = "shop_like", 
+	  joinColumns = @JoinColumn(name = "user_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "shop_id"))
+	private Set<Shop> likedShops;
 	
 	public User() {
 	}
@@ -25,7 +38,7 @@ public class User {
 		this.id = id;
 		this.name = name;
 		this.mail = mail;
-		//this.likedShops = new HashSet<Shop>();
+		this.likedShops = new HashSet<Shop>();
 	}
 
 	public int getId() {
@@ -52,7 +65,7 @@ public class User {
 		this.mail = mail;
 	}
 
-	/*public Set<Shop> getLikedShops() {
+	public Set<Shop> getLikedShops() {
 		return likedShops;
 	}
 
@@ -62,6 +75,11 @@ public class User {
 	
 	public void addLikedShop(Shop shop) {
 		this.likedShops.add(shop);
-	}*/
+	}
+	
+	@Override
+	public String toString() {
+		return "User : " + this.id + "--" + this.name + "--" + this.mail;
+	}
 	
 }
