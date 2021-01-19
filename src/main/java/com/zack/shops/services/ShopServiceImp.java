@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zack.shops.Exception.ShopNotFoundException;
+import com.zack.shops.Exception.UserNotFoundException;
 import com.zack.shops.models.Shop;
 import com.zack.shops.models.User;
 import com.zack.shops.repositories.ShopRepository;
@@ -70,8 +71,15 @@ public class ShopServiceImp implements ShopService {
 
 	@Override
 	public void deleteShop(int idShop) {
-		this.user.getLikedShops().remove(this.shopRepo.findById(idShop).get());
-		this.userRepo.save(user);
+		//find user by at first,for now we just use one user, supposed the authenticated one
+		User user = userRepo.findById(1).orElseThrow(()->new UserNotFoundException(1));
+		
+		Set<Shop> shops = user.getLikedShops();
+		if(shops != null) {
+			user.getLikedShops().remove(this.shopRepo.findById(idShop).get());
+			this.userRepo.save(user);
+		}
+		
 		this.shopRepo.deleteById(idShop);	
 	}
 
