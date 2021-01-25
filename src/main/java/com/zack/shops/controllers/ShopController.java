@@ -27,7 +27,7 @@ public class ShopController {
 	
 	@GetMapping("")
 	public Set<Shop> getShops() {
-		return this.shopService.getShops();
+		throw new RuntimeException();
 	}
 	
 	@GetMapping("/liked")

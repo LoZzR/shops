@@ -12,16 +12,40 @@ import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
+@Table(	name = "users", 
+		uniqueConstraints = { 
+			@UniqueConstraint(columnNames = "username"),
+			@UniqueConstraint(columnNames = "email") 
+		})
 public class User {
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String name;
-	private String mail;
+
+	@NotBlank
+	@Size(max = 20)
+	private String username;
+
+	@NotBlank
+	@Size(max = 50)
+	@Email
+	private String email;
+
+	@NotBlank
+	@Size(max = 120)
+	private String password;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "user_role", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 	
 	@JsonIgnore
 	@ManyToMany
@@ -34,10 +58,10 @@ public class User {
 	public User() {
 	}
 
-	public User(int id, String name, String mail) {
+	public User(int id, String username, String email) {
 		this.id = id;
-		this.name = name;
-		this.mail = mail;
+		this.username = username;
+		this.email = email;
 		this.likedShops = new HashSet<Shop>();
 	}
 
@@ -49,20 +73,36 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	public Set<Shop> getLikedShops() {
@@ -79,7 +119,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User : " + this.id + "--" + this.name + "--" + this.mail;
+		return "User : " + this.id + "--" + this.username + "--" + this.email;
 	}
 	
 }
