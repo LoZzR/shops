@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	@NotBlank
 	@Size(max = 20)
@@ -58,18 +58,24 @@ public class User {
 	public User() {
 	}
 
-	public User(int id, String username, String email) {
+	public User(Long id, String username, String email) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.likedShops = new HashSet<Shop>();
 	}
 
-	public int getId() {
+	public User(String username, String email, String password) {
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
