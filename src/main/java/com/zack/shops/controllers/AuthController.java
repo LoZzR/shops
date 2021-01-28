@@ -32,7 +32,7 @@ import com.zack.shops.repositories.UserRepository;
 import com.zack.shops.security.jwt.JwtUtils;
 import com.zack.shops.security.services.UserDetailsImpl;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
