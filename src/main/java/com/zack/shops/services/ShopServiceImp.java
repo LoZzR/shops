@@ -35,19 +35,17 @@ public class ShopServiceImp implements ShopService {
 	@Override
 	public Set<Shop> getLikedShops() {
 		//user = theCurrentConnectedUser
-		Optional<User> user = userRepo.findById((long)8);
-		User userC = user.get();
-		return user.get().getLikedShops();
+		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		return user.getLikedShops();
 	}
 
 	@Override
 	public void likeShop(int idShop) {
-		Optional<Shop> shop = shopRepo.findById(idShop);
+		Shop shop = shopRepo.findById(idShop).orElseThrow(()->new ShopNotFoundException(idShop));
 		//find user by at first,for now we just use one user, supposed the authenticated one
-		Optional<User> user = userRepo.findById((long)8);
-		if(shop.isPresent()) {
-			user.ifPresent((u)->{u.addLikedShop(shop.get());this.userRepo.save(u);});
-		}
+		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		user.addLikedShop(shop);
+		userRepo.save(user);
 		
 	}
 	
