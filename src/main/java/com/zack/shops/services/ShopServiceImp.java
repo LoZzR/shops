@@ -17,8 +17,6 @@ import com.zack.shops.repositories.UserRepository;
 @Service
 public class ShopServiceImp implements ShopService {
 	
-	private User user;
-	
 	@Autowired
 	private ShopRepository shopRepo;
 	
@@ -37,16 +35,16 @@ public class ShopServiceImp implements ShopService {
 	@Override
 	public Set<Shop> getLikedShops() {
 		//user = theCurrentConnectedUser
-		Optional<User> user = userRepo.findById(1);
-		user.ifPresent((u)->this.user = u);
-		return this.user.getLikedShops();
+		Optional<User> user = userRepo.findById((long)8);
+		User userC = user.get();
+		return user.get().getLikedShops();
 	}
 
 	@Override
 	public void likeShop(int idShop) {
 		Optional<Shop> shop = shopRepo.findById(idShop);
 		//find user by at first,for now we just use one user, supposed the authenticated one
-		Optional<User> user = userRepo.findById(1);
+		Optional<User> user = userRepo.findById((long)8);
 		if(shop.isPresent()) {
 			user.ifPresent((u)->{u.addLikedShop(shop.get());this.userRepo.save(u);});
 		}
@@ -72,7 +70,7 @@ public class ShopServiceImp implements ShopService {
 	@Override
 	public void deleteShop(int idShop) {
 		//find user by at first,for now we just use one user, supposed the authenticated one
-		User user = userRepo.findById(1).orElseThrow(()->new UserNotFoundException(1));
+		User user = userRepo.findById((long)1).orElseThrow(()->new UserNotFoundException(8));
 		
 		Set<Shop> shops = user.getLikedShops();
 		if(shops != null) {
