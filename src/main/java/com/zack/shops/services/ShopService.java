@@ -10,6 +10,8 @@ public interface ShopService {
 	
 	public Set<Shop> getLikedShops();
 	
+	public Set<Shop> getNotLikedShops();
+	
 	public void likeShop(int idShop);
 	
 	public Shop getShopById(int idShop);

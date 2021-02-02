@@ -32,6 +32,12 @@ public class ShopController {
 		return this.shopService.getShops();
 	}
 	
+	@GetMapping("/not-liked")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public Set<Shop> getNotLikedShops() {
+		return this.shopService.getNotLikedShops();
+	}
+	
 	@GetMapping("/liked")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public Set<Shop> getLikedShops() {

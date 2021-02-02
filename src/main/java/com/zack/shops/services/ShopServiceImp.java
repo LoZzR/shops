@@ -3,6 +3,7 @@ package com.zack.shops.services;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,16 @@ public class ShopServiceImp implements ShopService {
 		//user = theCurrentConnectedUser
 		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
 		return user.getLikedShops();
+	}
+	
+	@Override
+	public Set<Shop> getNotLikedShops() {
+		//user = theCurrentConnectedUser
+		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		Set<Shop> likedShops = user.getLikedShops();
+		Set<Shop> shops = this.getShops();
+		Set<Shop> notLikedShops = shops.stream().filter((Shop shop) -> !likedShops.contains(shop)).collect(Collectors.toSet());
+		return notLikedShops;
 	}
 
 	@Override
