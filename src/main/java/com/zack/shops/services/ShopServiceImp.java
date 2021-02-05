@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zack.shops.Exception.ShopNotFoundException;
@@ -14,12 +15,17 @@ import com.zack.shops.models.Shop;
 import com.zack.shops.models.User;
 import com.zack.shops.repositories.ShopRepository;
 import com.zack.shops.repositories.UserRepository;
+import com.zack.shops.security.services.IAuthenticationFacade;
+import com.zack.shops.security.services.UserDetailsImpl;
 
 @Service
 public class ShopServiceImp implements ShopService {
 	
 	@Autowired
 	private ShopRepository shopRepo;
+	
+	@Autowired
+	private IAuthenticationFacade authenticationFacade;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -35,15 +41,13 @@ public class ShopServiceImp implements ShopService {
 
 	@Override
 	public Set<Shop> getLikedShops() {
-		//user = theCurrentConnectedUser
-		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		User user = userRepo.findById(this.getIdAuthenticatedUser()).orElseThrow(()->new UserNotFoundException(this.getIdAuthenticatedUser()));
 		return user.getLikedShops();
 	}
 	
 	@Override
 	public Set<Shop> getNotLikedShops() {
-		//user = theCurrentConnectedUser
-		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		User user = userRepo.findById(this.getIdAuthenticatedUser()).orElseThrow(()->new UserNotFoundException(this.getIdAuthenticatedUser()));
 		Set<Shop> likedShops = user.getLikedShops();
 		Set<Shop> shops = this.getShops();
 		Set<Shop> notLikedShops = shops.stream().filter((Shop shop) -> !likedShops.contains(shop)).collect(Collectors.toSet());
@@ -53,8 +57,7 @@ public class ShopServiceImp implements ShopService {
 	@Override
 	public void likeShop(int idShop) {
 		Shop shop = shopRepo.findById(idShop).orElseThrow(()->new ShopNotFoundException(idShop));
-		//find user by at first,for now we just use one user, supposed the authenticated one
-		User user = userRepo.findById((long)8).orElseThrow(()->new UserNotFoundException(8));
+		User user = userRepo.findById(this.getIdAuthenticatedUser()).orElseThrow(()->new UserNotFoundException(this.getIdAuthenticatedUser()));
 		user.addLikedShop(shop);
 		userRepo.save(user);
 		
@@ -78,8 +81,7 @@ public class ShopServiceImp implements ShopService {
 
 	@Override
 	public void deleteShop(int idShop) {
-		//find user by at first,for now we just use one user, supposed the authenticated one
-		User user = userRepo.findById((long)1).orElseThrow(()->new UserNotFoundException(8));
+		User user = userRepo.findById(this.getIdAuthenticatedUser()).orElseThrow(()->new UserNotFoundException(this.getIdAuthenticatedUser()));
 		
 		Set<Shop> shops = user.getLikedShops();
 		if(shops != null) {
@@ -88,6 +90,11 @@ public class ShopServiceImp implements ShopService {
 		}
 		
 		this.shopRepo.deleteById(idShop);	
+	}
+	
+	private Long getIdAuthenticatedUser() {
+		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) this.authenticationFacade.getUserDeyails();
+		return userDetailsImpl.getId();
 	}
 
 }
