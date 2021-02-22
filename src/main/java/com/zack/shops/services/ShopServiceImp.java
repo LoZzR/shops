@@ -88,4 +88,16 @@ public class ShopServiceImp implements ShopService {
 		this.shopRepo.deleteById(idShop);	
 	}
 
+	@Override
+	public void removeShopFromLikedShopList(int idShop) {
+		User user  = this.authenticationFacade.getAuthenticatedUser();
+		
+		Set<Shop> shops = user.getLikedShops();
+		if(shops != null) {
+			user.getLikedShops().remove(this.shopRepo.findById(idShop).get());
+			this.userRepo.save(user);
+		}
+		
+	}
+
 }

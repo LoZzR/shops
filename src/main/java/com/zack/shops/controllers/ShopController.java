@@ -50,6 +50,12 @@ public class ShopController {
 		this.shopService.likeShop(idShop);
 	}
 	
+	@DeleteMapping("/liked/{id}")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public void removeShopFromLikedShopList(@PathVariable int id) {
+		this.shopService.removeShopFromLikedShopList(id);
+	}
+	
 	@PostMapping("")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Shop addShop(@RequestBody Shop shop) {

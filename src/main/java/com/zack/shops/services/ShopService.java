@@ -20,5 +20,7 @@ public interface ShopService {
 	
 	public Shop editShop(Shop shop);
 	
+	public void removeShopFromLikedShopList(int idShop);
+	
 	public void deleteShop(int idShop);
 }
