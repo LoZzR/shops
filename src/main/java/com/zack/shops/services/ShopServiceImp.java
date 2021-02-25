@@ -18,6 +18,8 @@ import com.zack.shops.models.User;
 import com.zack.shops.repositories.ShopRepository;
 import com.zack.shops.repositories.UserRepository;
 import com.zack.shops.security.services.IAuthenticationFacade;
+import com.zack.shops.utils.ShopUtils;
+
 
 @Service
 public class ShopServiceImp implements ShopService {
@@ -36,31 +38,32 @@ public class ShopServiceImp implements ShopService {
 	}
 
 	@Override
-	public Set<Shop> getShops() {
-		return new HashSet<>(this.shopRepo.findAll());
+	public List<Shop> getShops() {
+		return this.shopRepo.findAll();
 	}
 	
 	@Override
 	public Page<Shop> getPageShops(Pageable paging) {
-		Set<Shop> notLikedShops = this.getNotLikedShops();
+		List<Shop> notLikedShops = this.getNotLikedShops();
 		List<Shop> shopsList = new ArrayList<>();
 		shopsList.addAll(notLikedShops);
-		Page<Shop> pageShops = new PageImpl<>(shopsList, paging, shopsList.size());
+		List<List<Shop>> lists = ShopUtils.getPages(shopsList, paging.getPageSize());
+		Page<Shop> pageShops = new PageImpl<>(lists.get(paging.getPageNumber()), paging, shopsList.size());
 		return pageShops;
 	}
 
 	@Override
-	public Set<Shop> getLikedShops() {
+	public List<Shop> getLikedShops() {
 		User user = this.authenticationFacade.getAuthenticatedUser();
 		return user.getLikedShops();
 	}
 	
 	@Override
-	public Set<Shop> getNotLikedShops() {
+	public List<Shop> getNotLikedShops() {
 		User user = this.authenticationFacade.getAuthenticatedUser();
-		Set<Shop> likedShops = user.getLikedShops();
-		Set<Shop> shops = this.getShops();
-		Set<Shop> notLikedShops = shops.stream().filter((Shop shop) -> !likedShops.contains(shop)).collect(Collectors.toSet());
+		List<Shop> likedShops = user.getLikedShops();
+		List<Shop> shops = this.getShops();
+		List<Shop> notLikedShops = shops.stream().filter((Shop shop) -> !likedShops.contains(shop)).collect(Collectors.toList());
 		return notLikedShops;
 	}
 
@@ -93,7 +96,7 @@ public class ShopServiceImp implements ShopService {
 	public void deleteShop(int idShop) {
 		User user = this.authenticationFacade.getAuthenticatedUser();
 		
-		Set<Shop> shops = user.getLikedShops();
+		List<Shop> shops = user.getLikedShops();
 		if(shops != null) {
 			user.getLikedShops().remove(this.shopRepo.findById(idShop).get());
 			this.userRepo.save(user);
@@ -106,12 +109,13 @@ public class ShopServiceImp implements ShopService {
 	public void removeShopFromLikedShopList(int idShop) {
 		User user  = this.authenticationFacade.getAuthenticatedUser();
 		
-		Set<Shop> shops = user.getLikedShops();
+		List<Shop> shops = user.getLikedShops();
 		if(shops != null) {
 			user.getLikedShops().remove(this.shopRepo.findById(idShop).get());
 			this.userRepo.save(user);
 		}
 		
 	}
+	
 
 }

@@ -1,6 +1,6 @@
 package com.zack.shops.models;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +25,7 @@ public class Shop {
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "likedShops")
-	Set<User> likes;
+	List<User> likes;
 	
 	public Shop() {
 		
@@ -76,11 +76,11 @@ public class Shop {
 		this.imagePath = imagePath;
 	}
 	
-	public Set<User> getLikes() {
+	public List<User> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(Set<User> likes) {
+	public void setLikes(List<User> likes) {
 		this.likes = likes;
 	}
 

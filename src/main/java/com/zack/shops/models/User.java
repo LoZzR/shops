@@ -1,6 +1,8 @@
 package com.zack.shops.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -53,7 +55,7 @@ public class User {
 	  name = "shop_like", 
 	  joinColumns = @JoinColumn(name = "user_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "shop_id"))
-	private Set<Shop> likedShops;
+	private List<Shop> likedShops;
 	
 	public User() {
 	}
@@ -62,7 +64,7 @@ public class User {
 		this.id = id;
 		this.username = username;
 		this.email = email;
-		this.likedShops = new HashSet<Shop>();
+		this.likedShops = new ArrayList<Shop>();
 	}
 
 	public User(String username, String email, String password) {
@@ -111,11 +113,11 @@ public class User {
 		this.roles = roles;
 	}
 
-	public Set<Shop> getLikedShops() {
+	public List<Shop> getLikedShops() {
 		return likedShops;
 	}
 
-	public void setLikedShops(Set<Shop> likedShops) {
+	public void setLikedShops(List<Shop> likedShops) {
 		this.likedShops = likedShops;
 	}
 	

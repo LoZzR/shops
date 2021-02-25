@@ -3,7 +3,6 @@ package com.zack.shops.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +34,7 @@ public class ShopController {
 	
 	@GetMapping("")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public Set<Shop> getShops() {
+	public List<Shop> getShops() {
 		return this.shopService.getShops();
 	}
 	
@@ -59,7 +58,7 @@ public class ShopController {
 	
 	@GetMapping("/liked")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public Set<Shop> getLikedShops() {
+	public List<Shop> getLikedShops() {
 		return this.shopService.getLikedShops();
 	}
 	
