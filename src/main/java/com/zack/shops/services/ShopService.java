@@ -2,11 +2,16 @@ package com.zack.shops.services;
 
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.zack.shops.models.Shop;
 
 public interface ShopService {
 
 	public Set<Shop> getShops();
+	
+	public Page<Shop> getPageShops(Pageable paging);
 	
 	public Set<Shop> getLikedShops();
 	

@@ -1,10 +1,15 @@
 package com.zack.shops.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.zack.shops.Exception.ShopNotFoundException;
@@ -33,6 +38,15 @@ public class ShopServiceImp implements ShopService {
 	@Override
 	public Set<Shop> getShops() {
 		return new HashSet<>(this.shopRepo.findAll());
+	}
+	
+	@Override
+	public Page<Shop> getPageShops(Pageable paging) {
+		Set<Shop> notLikedShops = this.getNotLikedShops();
+		List<Shop> shopsList = new ArrayList<>();
+		shopsList.addAll(notLikedShops);
+		Page<Shop> pageShops = new PageImpl<>(shopsList, paging, shopsList.size());
+		return pageShops;
 	}
 
 	@Override
