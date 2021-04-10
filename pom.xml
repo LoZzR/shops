@@ -70,6 +70,15 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+        </dependency>
 	</dependencies>
 
 
@@ -79,6 +88,29 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			<plugin> 
+			    <groupId>org.jvnet.jaxb2.maven2</groupId>
+			    <artifactId>maven-jaxb2-plugin</artifactId>
+			    <version>0.14.0</version>
+			    <executions>
+			         <execution>
+			              <goals>
+			                  <goal>generate</goal>
+			              </goals>
+			         </execution>
+			    </executions>
+			    <configuration>
+			          <schemaLanguage>WSDL</schemaLanguage>
+			          <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+			          <generatePackage>com.zack.shops.client.gen</generatePackage>
+			          <schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
+			          <schemaIncludes>
+			             <include>location.wsdl</include>
+			          </schemaIncludes>
+			    </configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 

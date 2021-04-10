@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zack.shops.client.LocationClient;
+import com.zack.shops.client.gen.Location;
 import com.zack.shops.models.Shop;
 import com.zack.shops.services.ShopService;
 
@@ -31,6 +33,9 @@ public class ShopController {
 
 	@Autowired
 	private ShopService shopService;
+	
+	@Autowired
+	private LocationClient locationClient;
 	
 	@GetMapping("")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -48,7 +53,7 @@ public class ShopController {
 		List<Shop> shops = pageShops.getContent();
 		
 		Map<String, Object> response = new HashMap<>();
-	    response.put("tutorials", shops);
+	    response.put("shops", shops);
 	    response.put("currentPage", pageShops.getNumber());
 	    response.put("totalItems", pageShops.getTotalElements());
 	    response.put("totalPages", pageShops.getTotalPages());
@@ -83,6 +88,7 @@ public class ShopController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public Shop getShop(@PathVariable int id) {
+		Location location = locationClient.getLocation(id).getReturn();
 		return this.shopService.getShopById(id);
 	}
 	
