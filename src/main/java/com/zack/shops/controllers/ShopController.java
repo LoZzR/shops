@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zack.shops.client.LocationClient;
-import com.zack.shops.client.gen.Location;
 import com.zack.shops.models.Shop;
 import com.zack.shops.services.ShopService;
 
@@ -33,9 +32,6 @@ public class ShopController {
 
 	@Autowired
 	private ShopService shopService;
-	
-	@Autowired
-	private LocationClient locationClient;
 	
 	@GetMapping("")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -88,7 +84,6 @@ public class ShopController {
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public Shop getShop(@PathVariable int id) {
-		Location location = locationClient.getLocation(id).getReturn();
 		return this.shopService.getShopById(id);
 	}
 	

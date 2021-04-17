@@ -1,10 +1,12 @@
 package com.zack.shops.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import com.zack.shops.client.LocationClient;
 
+@Configuration
 public class LocationClientConfig {
 
 	@Bean

@@ -8,8 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zack.shops.client.gen.Location;
 
 @Entity
 public class Shop {
@@ -26,6 +28,9 @@ public class Shop {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "likedShops")
 	List<User> likes;
+	
+	@Transient
+	Location location;
 	
 	public Shop() {
 		
@@ -82,6 +87,14 @@ public class Shop {
 
 	public void setLikes(List<User> likes) {
 		this.likes = likes;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	@Override

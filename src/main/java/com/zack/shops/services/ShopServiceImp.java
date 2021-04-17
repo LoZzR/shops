@@ -13,12 +13,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.zack.shops.Exception.ShopNotFoundException;
+import com.zack.shops.client.LocationClient;
+import com.zack.shops.client.gen.Location;
 import com.zack.shops.models.Shop;
 import com.zack.shops.models.User;
 import com.zack.shops.repositories.ShopRepository;
 import com.zack.shops.repositories.UserRepository;
 import com.zack.shops.security.services.IAuthenticationFacade;
 import com.zack.shops.utils.ShopUtils;
+
+import ch.qos.logback.classic.Logger;
 
 
 @Service
@@ -32,6 +36,9 @@ public class ShopServiceImp implements ShopService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private LocationClient locationClient;
 	
 	public ShopServiceImp() {
 		
@@ -78,7 +85,17 @@ public class ShopServiceImp implements ShopService {
 	
 	@Override
 	public Shop getShopById(int idShop) {
-		return this.shopRepo.findById(idShop).orElseThrow(()->new ShopNotFoundException(idShop));
+		
+		//search for location
+		Location location = null;
+		try {
+			location = locationClient.getLocation(idShop).getReturn();
+		} catch(Exception e){
+			System.out.println("Error while calling Location service with id shop : " + idShop);
+		}
+		Shop shop =  this.shopRepo.findById(idShop).orElseThrow(()->new ShopNotFoundException(idShop));
+		shop.setLocation(location);
+		return shop;
 	}
 	
 	@Override
